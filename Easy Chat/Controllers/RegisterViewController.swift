@@ -18,14 +18,11 @@ class RegisterViewController: UIViewController {
         if let email = emailTextfield.text, let password = passwordTextfield.text {
             Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                 if let e = error {
-                    let alert = UIAlertController(title: "Error", message: "\(e)", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
-                    NSLog("The \"OK\" alert occured.")
-                    }))
-                    self.present(alert, animated: true, completion: nil)
+                    validationError(error: e, uiViewController: self)
+                } else {
+                    self.performSegue(withIdentifier: K.registerSegue, sender: self)
                 }
             }
         }
     }
-    
 }
