@@ -10,9 +10,12 @@ import UIKit
 
 class WelcomeViewController: UIViewController {
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationBarSet(navigationController: navigationController)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
 

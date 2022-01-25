@@ -12,13 +12,14 @@ class TableViewCell: UITableViewCell {
 
     @IBOutlet weak var messageView: UIView!
     @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var meAvatarImageView: UIImageView!
+    @IBOutlet weak var youAvatarImageView: UIImageView!
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        messageView.layer.cornerRadius = messageView.frame.height/5
+        messageView.layer.cornerRadius = messageView.frame.size.height/5
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

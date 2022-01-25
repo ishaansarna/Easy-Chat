@@ -20,9 +20,7 @@ class ChatViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.hidesBackButton = true
-        
+                
         tableView.dataSource = self
         
         tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
@@ -48,6 +46,8 @@ class ChatViewController: UIViewController {
                                                          date: document.data()[K.FStore.dateField] as! TimeInterval))
                             DispatchQueue.main.async {
                                 self.tableView.reloadData()
+                                self.tableView.scrollToRow(at: IndexPath(row: self.messages.count-1, section: 0),
+                                                           at: .top, animated: false)
                             }
                         }
                     }
@@ -65,7 +65,8 @@ class ChatViewController: UIViewController {
                 if let e = error {
                     validationError(error: e, uiViewController: self)
                 } else {
-                    self.messageTextfield.text = ""
+                    DispatchQueue.main.async {
+                        self.messageTextfield.text = ""                    }
                 }
             }
         }
@@ -89,8 +90,23 @@ extension ChatViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let message = messages[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! TableViewCell
-        cell.label?.text = messages[indexPath.row].body
+        cell.label?.text = message.body
+        
+        if message.sender == Auth.auth().currentUser?.email {
+            cell.meAvatarImageView.isHidden = false
+            cell.youAvatarImageView.isHidden = true
+            cell.messageView.backgroundColor = UIColor(named: K.BrandColors.lightPurple)
+            cell.label.textColor = UIColor(named: K.BrandColors.purple)
+        } else {
+            cell.meAvatarImageView.isHidden = true
+            cell.youAvatarImageView.isHidden = false
+            cell.messageView.backgroundColor = UIColor(named: K.BrandColors.purple)
+            cell.label.textColor = UIColor(named: K.BrandColors.lightPurple)
+        }
+        
         return cell
     }
     
